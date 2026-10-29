@@ -41,6 +41,7 @@ ElderCareProject/
 │
 ├── run.py                     # Master CLI for entire pipeline
 └── AGENTS.md                  # AI agent instructions
+
 🚀 Quick Start (30 seconds)
 🎬 Demo Video
 The demo video is part of the repository, but GitHub does not auto-play videos when someone opens the repo page. Viewers need to click the file or the link below to play it.
