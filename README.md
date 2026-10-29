@@ -1,313 +1,308 @@
-ElderCare AI v2.0 - Complete Project Overview
-Professional AI-Powered Fall Detection & Healthcare Monitoring System
+# ElderCare AI — Fall Detection & Elderly Monitoring System
 
-A full-stack healthcare platform combining modern web technology with cutting-edge ML pose estimation for real-time fall detection and elderly care monitoring.
+An AI-assisted elderly care monitoring platform that combines pose estimation, temporal deep learning, gait analysis, and caregiver alerts to identify potential falls and monitor daily activities.
 
-🏗️ Project Architecture
+## Overview
+
+ElderCare AI is designed to process video footage, extract human pose information, recognize activities, and detect potential fall events. The system combines a machine-learning pipeline with a web dashboard, database, and notification services.
+
+The project explores how computer vision and temporal modelling can support elderly safety monitoring.
+
+> **Project status:** The core web application and ML pipeline are described as implemented. The mobile application integration, automated testing, and deployment workflows require further verification.
+
+## Key Features
+
+- **Pose estimation:** Extracts human skeletal keypoints from video frames.
+- **Fall detection:** Classifies observations as fall or non-fall events.
+- **Activity recognition:** Recognizes seven activity categories.
+- **Gait analysis:** Estimates fall risk using movement-related features.
+- **Alert generation:** Detects configured events such as falls, SOS gestures, prolonged inactivity, and elevated fall risk.
+- **Caregiver notifications:** Supports email and Firebase Cloud Messaging integrations.
+- **Monitoring dashboard:** Displays patient information, activity summaries, session results, and alert history.
+- **Data persistence:** Uses PostgreSQL to store session information, predictions, and alerts.
+
+## System Architecture
+
+The project is organized into the following components:
+
+```text
 ElderCareProject/
-├── eldercare_v2/              # ⭐ MAIN PRODUCTION APP (Start here!)
-│   ├── backend/               # FastAPI REST API + async processing
-│   ├── frontend/              # React 18 + Tailwind CSS dashboard
-│   ├── database/              # PostgreSQL schema
-│   └── docker-compose.yml     # Complete infrastructure orchestration
-│
-├── pipeline/                  # ML data processing pipeline
-│   ├── inference.py           # 🚀 Main inference engine (produces predictions)
-│   ├── pose_extractor.py      # Hybrid YOLO v8 + MediaPipe pose extraction
-│   ├── gait_analyzer.py       # Fall risk assessment via biomechanics
-│   └── extract_pipeline.py    # Batch processing for datasets
-│
-├── models/                    # Trained ML models
-│   ├── binary_fall_best.pth   # Fall detection (95%+ accuracy)
-│   ├── activity_best.pth      # Activity recognition (7 classes)
-│   ├── tcn_lstm_model.py      # Model architecture (TCN-BiLSTM)
-│   ├── binary_fall_train.py   # Fall training script
-│   └── activity_train.py      # Activity training script
-│
-├── alerts/                    # Real-time SOS system
-│   ├── sos_detector.py        # 5 alert types: fall, wave, sleep, inactivity, risk
-│   ├── email_alert.py         # Gmail SMTP notifications
-│   └── firebase_alert.py      # Mobile push notifications
-│
-├── configs/                   # Centralized configuration
-│   └── config.py              # All thresholds, paths, credentials in one place
-│
-├── datasets/                  # Data storage
-│   ├── raw/                   # Raw videos stored locally
-│   └── processed/             # Extracted poses as CSV files
-│
-├── eldercare_flutter_app/     # Mobile app (separate, not fully integrated)
-│   └── lib/                   # Flutter code
-│
-├── run.py                     # Master CLI for entire pipeline
-└── AGENTS.md                  # AI agent instructions
+├── eldercare_v2/
+│   ├── backend/          # FastAPI application
+│   ├── frontend/         # React dashboard
+│   ├── database/         # PostgreSQL schema
+│   └── docker-compose.yml
+├── pipeline/
+│   ├── inference.py      # Video inference orchestration
+│   ├── pose_extractor.py # Pose estimation
+│   ├── gait_analyzer.py  # Movement and fall-risk analysis
+│   └── extract_pipeline.py
+├── models/
+│   ├── tcn_lstm_model.py
+│   ├── binary_fall_train.py
+│   ├── activity_train.py
+│   ├── binary_fall_best.pth
+│   └── activity_best.pth
+├── alerts/
+│   ├── sos_detector.py
+│   ├── email_alert.py
+│   └── firebase_alert.py
+├── configs/
+│   └── config.py
+├── datasets/
+│   ├── raw/
+│   └── processed/
+├── eldercare_flutter_app/
+├── run.py
+└── AGENTS.md
+```
 
-🚀 Quick Start (30 seconds)
-🎬 Demo Video
-The demo video is part of the repository, but GitHub does not auto-play videos when someone opens the repo page. Viewers need to click the file or the link below to play it.
+*Note: This tree summarizes the reported project structure. Verify the actual filenames and folders before publishing.*
 
-Open demo video
-If you want an always-visible preview on the README itself, the usual option is to add a short animated GIF or a linked thumbnail instead of relying on auto-play.
+## Technology Stack
 
-Option 1: Docker (Recommended)
+| Component | Technologies |
+|---|---|
+| Backend | Python, FastAPI, Uvicorn |
+| Frontend | React 18, Vite, Tailwind CSS |
+| Database | PostgreSQL, SQLAlchemy |
+| ML and deep learning | PyTorch, scikit-learn, NumPy, Pandas |
+| Pose estimation | YOLOv8 Pose, MediaPipe |
+| Video processing | OpenCV |
+| Model architecture | Temporal Convolutional Network (TCN) and BiLSTM |
+| Visualizations | Recharts |
+| State management | Zustand |
+| Infrastructure | Docker, Docker Compose, Redis |
+| Notifications | SMTP email, Firebase Cloud Messaging |
+| Mobile application | Flutter |
+
+## Machine Learning Pipeline
+
+The processing workflow is intended to follow these stages:
+
+1. **Video input:** A user uploads a video through the application.
+2. **Pose extraction:** The video-processing pipeline detects a person and extracts skeletal landmarks.
+3. **Sequence preparation:** Pose observations are organized into temporal sequences. The described configuration uses 30-frame windows.
+4. **Model inference:** The trained models predict fall events and recognize activities.
+5. **Gait analysis:** Movement-related features are used to estimate potential fall risk.
+6. **Alert evaluation:** The alert module checks predictions and configured thresholds.
+7. **Notification delivery:** Eligible events can trigger email or Firebase notifications.
+8. **Storage and visualization:** Session data, predictions, and alert history are stored and presented in the dashboard.
+
+### Pose Estimation
+
+The documented pipeline combines YOLOv8 Pose and MediaPipe. YOLO-based pose detection is described as providing 17 COCO keypoints, while MediaPipe provides 33 pose landmarks.
+
+The exact fusion method, output representation, and handling of missing detections should be documented from the implementation.
+
+### Temporal Modelling
+
+The project includes a TCN–BiLSTM architecture.
+
+- **TCN:** Learns temporal patterns from sequences using temporal convolutions.
+- **BiLSTM:** Processes sequence information in both forward and backward directions.
+- **Fall classification:** Predicts fall versus non-fall events.
+- **Activity classification:** Predicts one of the configured activity categories.
+
+The model input dimensions, sequence labels, loss functions, and training configuration should be documented alongside the actual model code.
+
+## Model Performance
+
+The supplied project overview reports the following figures:
+
+| Model | Task | Reported performance |
+|---|---|---|
+| `binary_fall_best.pth` | Binary fall detection | 95%+ accuracy |
+| `activity_best.pth` | Seven-class activity recognition | Not specified |
+
+**Evaluation note:** These figures are reported in the existing project documentation and should not be treated as independently reproduced results. Before publishing performance claims, verify the evaluation dataset, train/test separation, class distribution, metric calculations, and model checkpoint.
+
+For a reproducible evaluation, report accuracy, precision, recall, F1-score, and the confusion matrix where appropriate.
+
+## Alert System
+
+The alert module describes five event categories:
+
+| Alert | Trigger described in the project |
+|---|---|
+| `FALL` | Fall confidence of 0.75 or higher |
+| `WAVE_SOS` | At least three wave gestures within 10 seconds |
+| `PROLONGED_SLEEP` | Continuous sleeping exceeding 15 hours |
+| `PROLONGED_INACTIVITY` | No detected movement for more than two hours |
+| `FALL_RISK` | Gait-risk score of 0.70 or higher |
+
+These are configurable rules, not clinically validated thresholds. Their implementation, cooldown behavior, false-positive rate, and suitability for real-world care settings need testing.
+
+## Backend API
+
+The FastAPI application exposes endpoints for authentication, video processing, patient management, dashboard statistics, and alert handling.
+
+### Authentication
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/api/auth/login` | Authenticate a user |
+| GET | `/api/auth/me` | Retrieve the current user |
+
+### Video Processing
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/api/sessions/upload` | Upload a video for processing |
+| GET | `/api/sessions/{id}` | Retrieve session details |
+| GET | `/api/sessions/{id}/predictions` | Retrieve predictions |
+| GET | `/api/sessions/{id}/video/skeleton` | Retrieve the skeleton-overlay video |
+
+### Patient Management
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/patients` | List patients |
+| POST | `/api/patients` | Create a patient |
+| GET | `/api/patients/{id}` | Retrieve patient details |
+
+### Dashboard and Alerts
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/dashboard/stats` | Retrieve dashboard statistics |
+| GET | `/api/dashboard/activity-distribution` | Retrieve activity summaries |
+| GET | `/api/dashboard/recent-alerts` | Retrieve recent alerts |
+| GET | `/api/alerts` | Retrieve alert history |
+| POST | `/api/alerts/{id}/acknowledge` | Acknowledge an alert |
+
+For a running instance, interactive API documentation is expected at `/docs`.
+
+## Local Setup
+
+### Prerequisites
+
+- Python 3.9 or a compatible version supported by the dependencies
+- Node.js and npm
+- Docker and Docker Compose, or a local PostgreSQL installation
+- Git
+- Optional CUDA-compatible GPU for accelerated inference
+
+### Option 1: Docker Compose
+
+From the application directory:
+
+```bash
 cd eldercare_v2
-docker-compose up --build
-# Services ready:
-#   Frontend: http://localhost:5173
-#   Backend: http://localhost:8000/docs (Swagger)
-#   Database: localhost:5432
-Option 2: Manual Setup
-# Terminal 1 - Backend
+docker compose up --build
+```
+
+The documented local service addresses are:
+
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:8000`
+- API documentation: `http://localhost:8000/docs`
+- PostgreSQL: port `5432`
+
+These addresses and service configurations should be checked against `docker-compose.yml`.
+
+### Option 2: Manual Setup
+
+**Backend**
+
+```bash
 cd eldercare_v2/backend
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+```
+
+Activate the virtual environment.
+
+Windows PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Linux or macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies and start the API:
+
+```bash
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
 
-# Terminal 2 - Frontend
+**Frontend**
+
+Open another terminal:
+
+```bash
 cd eldercare_v2/frontend
 npm install
 npm run dev
+```
 
-# Terminal 3 - Database (requires PostgreSQL installed)
-psql -U eldercare_user -d eldercare_db < database/schema.sql
-📊 What This System Does
-Core Features
-Video Processing - Upload videos of elderly patients
-Pose Estimation - Extract skeleton keypoints (17 joints per frame) using YOLO v8 + MediaPipe
-Activity Recognition - Classify: walking, sitting, standing, eating, sleeping, waving, other
-Fall Detection - Real-time binary classification with 95%+ accuracy
-Gait Analysis - Proactive fall risk assessment using biomechanics
-Alert System - 5 alert types (fall, wave-SOS, prolonged sleep, inactivity, high risk)
-Notifications - Email + Firebase push to caregiver devices
-Dashboard - Real-time timeline, alerts, patient management, statistics
-📁 Folder Breakdown
-🎯 eldercare_v2/ (Production Application)
-Status: ✅ Complete and running
+Start PostgreSQL separately and initialize the database using the schema and database instructions provided in the repository.
 
-Component	Purpose	Tech Stack	Port
-backend/	REST API + async processing	FastAPI, PostgreSQL, SQLAlchemy	8000
-frontend/	Web dashboard	React 18, Tailwind, Recharts, Vite	5173
-database/	Schema & migrations	PostgreSQL 15	5432
-docker-compose.yml	Orchestration	4 services (postgres, backend, frontend, redis)	-
-Read: eldercare_v2/README.md for detailed setup
+## Environment Configuration
 
-🧠 pipeline/ (ML Data Processing)
-Status: ✅ Complete
+Create a local `.env` file using the variables required by the application. An example configuration may include:
 
-File	Purpose	Input	Output
-inference.py	Main inference engine	Video file (.mp4, .avi)	Predictions + skeleton video
-pose_extractor.py	Hybrid pose detection	Video frames	17 COCO keypoints per frame
-gait_analyzer.py	Fall risk scoring	Pose sequences	Risk score (0-1) + level
-extract_pipeline.py	Batch processing	Raw video datasets	CSV pose files
-Read: pipeline/README.md for data flows
-
-🤖 models/ (Trained ML Models)
-Status: ✅ Complete
-
-File	Type	Classes	Accuracy	Size
-binary_fall_best.pth	PyTorch model	fall / no_fall	95%+	~50MB
-activity_best.pth	PyTorch model	7 activities	-	-
-tcn_lstm_model.py	Architecture	-	-	-
-Read: models/README.md for training & model details
-
-🚨 alerts/ (SOS Detection & Notifications)
-Status: ✅ Complete
-
-5 Alert Types:
-
-FALL - Immediate fall detection (threshold: 0.75+ confidence)
-WAVE_SOS - 3+ wave gestures in 10 second window
-PROLONGED_SLEEP - Sleeping > 15 hours continuously
-PROLONGED_INACTIVITY - No movement for 2+ hours
-FALL_RISK - Gait analysis high-risk warning (0.70+ score)
-Read: alerts/README.md for configuration
-
-⚙️ configs/ (Configuration Management)
-Status: ✅ Complete
-
-Single source of truth for all settings:
-
-# Access from anywhere:
-from configs.config import ALERT_THRESHOLDS, MODEL_CONFIG, EMAIL_CONFIG
-Read: configs/README.md for all settings
-
-📦 datasets/ (Data Storage)
-Status: ⚠️ Partial (structure exists, some datasets may be placeholder)
-
-Raw datasets are stored locally under datasets/raw/ and are not meant to be committed to GitHub.
-
-Typical local dataset folders include fall videos, activity recognition videos, and multi-camera capture sets.
-
-Read: datasets/README.md for management
-
-📱 eldercare_flutter_app/ (Mobile App)
-Status: ⚠️ Incomplete (separate project, not fully integrated)
-
-Firebase integration
-Push notification handling
-Alert viewer
-Issue: No documented API contracts with backend
-🖼️ App Screenshots
-The App/ folder contains a few UI screenshots from the mobile experience:
-
-dashboard.jpeg
-notification.jpeg
-Dasshboard.jpeg
-🔄 Data Flow Pipeline
-User uploads video
-    ↓
-Backend receives /api/sessions/upload
-    ↓
-InferenceEngine.run_video() spawned
-    ↓
-HybridPoseExtractor processes each frame
-    ├─ YOLO v8 detects 17 keypoints
-    └─ MediaPipe extracts 33 landmarks → merged
-    ↓
-Temporal buffering (30 frames = ~1 second @ 30fps)
-    ↓
-TCN-BiLSTM models (activity + fall)
-    ├─ Activity Classifier → 7 classes
-    └─ Fall Detector → fall/no-fall (binary)
-    ↓
-GaitAnalyzer computes risk score
-    ↓
-SOSDetector checks for alerts
-    ├─ Fall? Send FALL alert
-    ├─ Wave? Send WAVE_SOS alert
-    └─ etc...
-    ↓
-EmailAlertSender + FirebaseAlertSender
-    ↓
-Notifications delivered to caregiver
-    ↓
-Backend stores to PostgreSQL
-    ├─ predictions table (frame-level)
-    ├─ sos_events table (alert history)
-    └─ activity_timeline table (aggregates)
-    ↓
-Frontend displays real-time dashboard
-🔌 API Endpoints (20+ endpoints)
-Authentication:
-
-POST /api/auth/login - Login with credentials
-GET /api/auth/me - Get current user
-Video Processing:
-
-POST /api/sessions/upload - Upload video for processing
-GET /api/sessions/{id} - Get session details
-GET /api/sessions/{id}/predictions - Get frame predictions
-GET /api/sessions/{id}/video/skeleton - Download skeleton video
-Patient Management:
-
-GET /api/patients - List all patients
-POST /api/patients - Create patient
-GET /api/patients/{id} - Get patient details
-Dashboard:
-
-GET /api/dashboard/stats - Statistics (total sessions, falls, etc.)
-GET /api/dashboard/activity-distribution - Activity percentages
-GET /api/dashboard/recent-alerts - Last 5 alerts
-Alerts:
-
-GET /api/alerts - Alert history
-POST /api/alerts/{id}/acknowledge - Mark alert as addressed
-Full API docs: http://localhost:8000/docs (Swagger UI)
-
-🛠️ Technology Stack
-Backend
-Framework: FastAPI (Python 3.9+)
-Database: PostgreSQL 15
-ORM: SQLAlchemy
-Async: Uvicorn + async/await
-Auth: JWT + role-based access
-Frontend
-Framework: React 18
-Bundler: Vite
-Styling: Tailwind CSS
-Charts: Recharts
-State: Zustand
-HTTP: Axios
-ML/CV
-Pose Detection: YOLO v8-pose + MediaPipe
-Deep Learning: PyTorch
-Model: TCN-BiLSTM (temporal convolution + bidirectional LSTM)
-Computer Vision: OpenCV
-Data: Pandas, NumPy, scikit-learn
-Infrastructure
-Containerization: Docker + Docker Compose
-Cache: Redis
-Notifications: Firebase Cloud Messaging (FCM)
-Email: Gmail SMTP
-📈 Model Performance
-Model	Task	Accuracy	F1-Score	Deployment
-binary_fall_best.pth	Fall detection	95%+	-	Production ✅
-activity_best.pth	Activity recognition	-	-	Production ✅
-📚 Detailed Documentation
-Each folder has detailed README files:
-
-Folder	README	Contents
-eldercare_v2/	README.md	Setup, endpoints, architecture
-pipeline/	README.md	Data flows, processing pipeline
-models/	README.md	Model specs, training, inference
-alerts/	README.md	Alert types, configuration, extending
-configs/	README.md	All configurable settings
-datasets/	README.md	Dataset management, formats
-⚙️ Environment Setup
-Create .env file in eldercare_v2/backend/:
-
-# Database
-DATABASE_URL=postgresql://eldercare_user:secure_password_123@localhost:5432/eldercare_db
-
-# Auth
-SECRET_KEY=your_secret_key_change_in_production
-
-# Alerts
-ALERT_EMAIL=your_email@gmail.com
-ALERT_PASSWORD=your_app_password
-
-# Firebase
-FIREBASE_CREDENTIALS_PATH=serviceAccountKey.json
-FCM_DEVICE_TOKENS=token1,token2,token3
-
-# ML Pipeline
-MODEL_ROOT=/app/models
+```dotenv
+DATABASE_URL=
+SECRET_KEY=
+ALERT_EMAIL=
+ALERT_PASSWORD=
+FIREBASE_CREDENTIALS_PATH=
+FCM_DEVICE_TOKENS=
+MODEL_ROOT=
 CONFIDENCE_THRESHOLD=0.35
-🚨 Common Issues & Fixes
-Issue	Cause	Fix
-Port 8000 already in use	Another service running	lsof -i :8000 then kill the process
-PostgreSQL connection refused	DB not running	docker-compose up postgres
-Models won't load	File paths wrong	Check configs/config.py paths
-CUDA out of memory	GPU too small	Set DEVICE=cpu in config
-Poses missing in output	Person not detected	Lower confidence_threshold in config
-Alert spam	No cooldown	Check ALERT_COOLDOWN_MIN=30
-📊 Status Summary
-✅ Complete (Production Ready)
-Fullstack application (backend, frontend, database)
-ML pipeline (pose extraction, models, training)
-Alert system (5 alert types)
-Docker orchestration
-API documentation
-⚠️ Incomplete (Needs Work)
-Mobile app integration (Flutter app exists but not connected)
-Unit/integration tests (no test suite)
-CI/CD pipeline (no GitHub Actions)
-API error handling edge cases
-🗑️ Deprecated
-flask_server_v2_redesigned.py - Replaced by FastAPI
-🎯 Next Steps
-Read the main folders README → Start with eldercare_v2/README.md
-Deploy locally → docker-compose up --build
-Test the API → Open http://localhost:8000/docs
-Upload a test video → Use frontend at http://localhost:5173
-Check the logs → docker-compose logs -f backend
-📞 Support
-Architecture Questions: See eldercare_v2/README.md
-Setup Issues: See eldercare_v2/README.md
-ML Pipeline: See pipeline/README.md
-Configuration: See configs/config.py
-Model Training: See models/train.py
-Last Updated: December 2025
-Version: ElderCare AI v2.0
-Status: Production-ready ✅
+```
+
+Use local values for your environment. Never commit real passwords, secret keys, Firebase service-account files, device tokens, or other credentials to GitHub.
+
+## Data Management
+
+The project separates raw videos from processed pose data:
+
+- `datasets/raw/`: source video files
+- `datasets/processed/`: extracted pose sequences and related CSV files
+
+Large datasets and sensitive video recordings should remain outside the repository unless redistribution is explicitly permitted. Document dataset sources, licensing, preprocessing, and expected file formats.
+
+## Current Limitations and Future Work
+
+The supplied project overview identifies the following areas for further work:
+
+- Integrating the Flutter mobile application with the backend API.
+- Adding unit tests and end-to-end integration tests.
+- Implementing continuous integration and automated checks.
+- Improving API error handling and edge-case coverage.
+- Verifying model performance on independent, representative datasets.
+- Evaluating false positives, false negatives, and performance across different camera conditions.
+- Testing alert delivery, notification cooldowns, and recovery from service failures.
+- Reviewing privacy, access control, data retention, and security practices.
+
+This system should be treated as an experimental monitoring aid, not a replacement for professional medical assessment or emergency services.
+
+## Reproducibility and Contributions
+
+To reproduce the reported results, document:
+
+- Dataset sources and preprocessing procedures.
+- Model architecture and hyperparameters.
+- Training and validation configuration.
+- Evaluation scripts and metric definitions.
+- Software dependencies and hardware used.
+- Random seeds and checkpoint provenance, where applicable.
+
+If this repository is an independent learning implementation based on an existing collaborative project, acknowledge the original contributors and clearly identify the components that have been independently implemented, modified, or evaluated.
+
+## License and Attribution
+
+Add a license only after confirming the permissions applicable to the original code, datasets, and model weights. Retain required notices and acknowledge original contributors where appropriate.
+
+---
+
+**Project:** ElderCare AI — Fall Detection & Elderly Monitoring System  
+**Version:** 2.0, if confirmed by the repository  
+**Primary focus:** Pose-based fall detection, temporal activity recognition, and caregiver alerting
