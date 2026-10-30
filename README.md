@@ -239,7 +239,6 @@ Start PostgreSQL separately and initialize the database using the schema and dat
 
 ## Environment Configuration
 
-Create a local `.env` file using the variables required by the application. An example configuration may include:
 
 ```dotenv
 DATABASE_URL=
@@ -260,7 +259,6 @@ The project separates raw videos from processed pose data:
 - `datasets/raw/`: source video files
 - `datasets/processed/`: extracted pose sequences and related CSV files
 
-Large datasets and sensitive video recordings should remain outside the repository unless redistribution is explicitly permitted. Document dataset sources, licensing, preprocessing, and expected file formats.
 
 ## Current Limitations and Future Work
 
@@ -278,8 +276,6 @@ The supplied project overview identifies the following areas for further work:
 This system should be treated as an experimental monitoring aid, not a replacement for professional medical assessment or emergency services.
 
 ## Reproducibility and Contributions
-
-To reproduce the reported results, document:
 
 - Dataset sources and preprocessing procedures.
 - Model architecture and hyperparameters.
