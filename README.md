@@ -55,9 +55,7 @@ ElderCareProject/
 ├── eldercare_flutter_app/
 ├── run.py
 └── AGENTS.md
-```
-
-*Note: This tree summarizes the reported project structure. Verify the actual filenames and folders before publishing.*
+`
 
 ## Technology Stack
 
@@ -93,7 +91,6 @@ The processing workflow is intended to follow these stages:
 
 The documented pipeline combines YOLOv8 Pose and MediaPipe. YOLO-based pose detection is described as providing 17 COCO keypoints, while MediaPipe provides 33 pose landmarks.
 
-The exact fusion method, output representation, and handling of missing detections should be documented from the implementation.
 
 ### Temporal Modelling
 
@@ -103,8 +100,6 @@ The project includes a TCN–BiLSTM architecture.
 - **BiLSTM:** Processes sequence information in both forward and backward directions.
 - **Fall classification:** Predicts fall versus non-fall events.
 - **Activity classification:** Predicts one of the configured activity categories.
-
-The model input dimensions, sequence labels, loss functions, and training configuration should be documented alongside the actual model code.
 
 ## Model Performance
 
@@ -131,7 +126,6 @@ The alert module describes five event categories:
 | `PROLONGED_INACTIVITY` | No detected movement for more than two hours |
 | `FALL_RISK` | Gait-risk score of 0.70 or higher |
 
-These are configurable rules, not clinically validated thresholds. Their implementation, cooldown behavior, false-positive rate, and suitability for real-world care settings need testing.
 
 ## Backend API
 
@@ -258,7 +252,6 @@ MODEL_ROOT=
 CONFIDENCE_THRESHOLD=0.35
 ```
 
-Use local values for your environment. Never commit real passwords, secret keys, Firebase service-account files, device tokens, or other credentials to GitHub.
 
 ## Data Management
 
@@ -295,13 +288,10 @@ To reproduce the reported results, document:
 - Software dependencies and hardware used.
 - Random seeds and checkpoint provenance, where applicable.
 
-If this repository is an independent learning implementation based on an existing collaborative project, acknowledge the original contributors and clearly identify the components that have been independently implemented, modified, or evaluated.
 
 ## License and Attribution
 
-Add a license only after confirming the permissions applicable to the original code, datasets, and model weights. Retain required notices and acknowledge original contributors where appropriate.
 
----
 
 **Project:** ElderCare AI — Fall Detection & Elderly Monitoring System  
 **Version:** 2.0, if confirmed by the repository  
